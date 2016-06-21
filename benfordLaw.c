@@ -3,20 +3,17 @@
    Purpose: To find percentile distribution of leading digits from a set of data
 */
 
-#include<iostream>
-#include<iomanip>
-#include<fstream>
+#include<stdio.h>
+#include<stdlib.h>
 
-using namespace std;
-
+// Declares subprograms for formatting and prompting
 void continuePrompt();
 void dash();
-void printTitle(string title);
-// Declares subprograms for formatting and prompting
+void printTitle(char *title);
 
+// Declares the subprogram for the splash screen and menu
 void welcome();
 void menu();
-// Declares the subprogram for the splash screen and menu
 
 void openFile(int menuChoice);
 void calculateDistribution(float numberCount[], float indexes);
@@ -30,38 +27,36 @@ int main()
     
 void continuePrompt()
 {
-    system("pause");
     // Pauses and prompts the user to continue
+    printf("Press a key and enter to go to continue...");
+    getchar();
+
+    while(getchar() == '\n')
+    {
+        getchar();
+    }
 }
 
 void dash()
 {
-    cout<<"-------------------------------------------------------------------";
-    cout<<"------------"<<endl;
     // Prints a line of dashes
+    printf("-----------------------------------------------------------------");
+    printf("--------------");
 }
 
-void printTitle(string title)
+void printTitle(char *title)
 { 
-    cout<<setw((79-title.length())/2)<<' '<<title<<endl;
-    // Takes the length of the screen and the title and centers it
+    // Prints the title
+    printf("%s\n", title);
 }
 
 void welcome()
 {
-    string phrase = "Benford's Law Tester";
     // Declares the phrase for string manipulation
+    char *phrase = "Benford's Law Tester";
     
-    for(int i = 0; i < 2; i++)
-        cout<<"\n";
-    
-    for(int i = 0; i < phrase.length(); i++)
-        cout<<setw(29+i)<<" "<<phrase[i]<<endl;
-    // Prints the title across the screen
-        
-    for(int i = 0; i < 2; i++)
-        cout<<"\n";
-        
+    printf("\n\n\n %s \n\n\n", phrase);
+
     continuePrompt();
 }
 
@@ -69,60 +64,61 @@ void menu()
 {
     int menuChoice;
      
-    system("cls");
-    cout<<"\n";
+    system("clear");
+    printf("\n");
     printTitle("Main Menu");
     dash();
-    cout<<"\n";
+    printf("\n");
     
-    cout<<"Which set of data would you like to test?"<<endl;
-    cout<<"\n";
-    cout<<"1 - Fibonacci Numbers"<<endl;
-    cout<<"2 - World Populations"<<endl;
-    cout<<"3 - World Areas"<<endl;
-    cout<<"4 - Cube Numbers"<<endl;
-    cout<<"\n";
-    cin>>menuChoice;
+    // Print the menu options and get user input
+    printf("Which set of data would you like to test?\n");
+    printf("1 - Fibonacci Numbers\n");
+    printf("2 - World Populations\n");
+    printf("3 - World Areas\n");
+    printf("4 - Cube Numbers\n");
+    scanf("%d", &menuChoice);
     
     openFile(menuChoice);
 }
 
 void openFile(int menuChoice)
 {
-    ifstream data;
-    float indexes, numberCount[9];
-    string tempData;
-    char tempLead;
-    int tempIndexes;
+    FILE *file;
+    float indexes = 0;
+    float numberCount[9];
+    //char *tempData = "Temp";
+    char tempLead = '\n';
     
     for(int i = 0; i <= 8; i++)
+    {
         numberCount[i] = 0;
-    
+    }
+
     switch(menuChoice)
     {
-        case 1: data.open("fibonacci.txt", ios::in);
+        case 1: file = fopen("fibonacci.txt", "r");
                 indexes = 100;
         break;
-        case 2: data.open("populations.txt", ios::in);
+        case 2: file = fopen("populations.txt", "r");
                 indexes = 238;
         break;
-        case 3: data.open("areas.txt", ios::in);
+        case 3: file = fopen("areas.txt", "r");
                 indexes = 234;
-        case 4: data.open("cubes.txt", ios::in);
+        case 4: file = fopen("cubes.txt", "r");
                 indexes = 1000;
         break;
-        default: cout<<"Sorry, there was a problem with your input."<<endl;
+        default: printf("Sorry, there was a problem with your input.");
         break;
     }
     
-    tempIndexes = indexes;
-    string dataStore[tempIndexes];
-    
-    for(int i = 1; i <= indexes; i++)
+    for(int i = 0; i < indexes; i++)
     {
-        data>>dataStore[i-1];
-        tempData = dataStore[i-1];
-        tempLead = tempData[0];
+        while (tempLead != '\n' && tempLead != EOF) {
+            tempLead = fgetc(file);
+        }
+        tempLead = fgetc(file);
+        //data>>dataStore[i];
+        //tempLead = tempData[0];
         
         switch(tempLead)
         {
@@ -144,10 +140,11 @@ void openFile(int menuChoice)
 void calculateDistribution(float numberCount[], float indexes)
 {     
     float distribution;
+
     for(int i = 0; i <= 8; i++)
     {
         distribution = (numberCount[i]/indexes)*100;
-        cout<<"Distribution for "<<i+1<<" is "<<distribution<<"%"<<endl;       
+        printf("Distribution for %d is %f\n", i+1, distribution);
     }
 }
 
