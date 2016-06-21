@@ -5,6 +5,12 @@ an even distribution, but is split with 1 appearing about 30% of the
 time and 9 appearing about 5% of the time. I tested this by creating
 text files with sets of data in them and counting the frequency of
 each of the numbers.
-I plan to port this program to a different language later on and apply
-better programming practises to it. For example, comments need to be
-moved to before code and system calls need to be removed.
+
+I have since ported the program to the C programming language and 
+applied some better programming practises to it. 
+
+Some potential changes are:
+    - Include more data sets
+    - Made data sets generic
+    - Make a better title printing system
+    - Make a better pause system

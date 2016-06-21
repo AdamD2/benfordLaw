@@ -117,8 +117,6 @@ void openFile(int menuChoice)
             tempLead = fgetc(file);
         }
         tempLead = fgetc(file);
-        //data>>dataStore[i];
-        //tempLead = tempData[0];
         
         switch(tempLead)
         {
