@@ -5,9 +5,13 @@
 # Author: Adam Douglas <adam_douglas2@hotmail.com>
 #
 
+$version = "Benford's Law Tester version: 0.1.\n";
+$help = "Usage: ./benfordLaw.pl [-v] [-h] < data.txt\n" .
+        "v - Version\nh - Help\ndata.txt is any text file to test\n";
+
 main();
 
-sub main {
+sub calculate_distribution() {
     my %num_count;
 
     # Initialize the hash to zero
@@ -31,4 +35,20 @@ sub main {
         $distribution = ($num_count{$i}/$indexes)*100;
         print "Distribution for $i is $distribution\n";
     }
+}
+
+sub main {
+    # Process arguments
+    foreach $arg (@ARGV) {
+        if ($arg eq "-v" or $arg eq "--version") {
+            print $version;
+            exit;
+        } elsif ($arg eq "-h" or $arg eq "--help") {
+            print $help;
+            exit;
+        }
+    }
+
+    # Calculate the distribution for any input
+    calculate_distribution();    
 }
